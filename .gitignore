@@ -1,0 +1,9 @@
+node_modules/
+.env
+.env.*
+.dev.vars
+.wrangler/
+dist/
+
+# Personal test photos (handwriting, exam papers)
+tests/fixtures/
