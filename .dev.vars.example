@@ -1,0 +1,3 @@
+# Copy to .dev.vars (gitignored) for `npm run dev`.
+GEMINI_API_KEY=your-ai-studio-key
+DEV_AUTH_BYPASS=1

@@ -1,0 +1,46 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "english-vocab",
+  "main": "worker/src/index.ts",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // The React app is built to dist/ and served as static assets. Only /api/*
+  // runs the Worker first; everything else is a static file (SPA fallback).
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+
+  // Serve the app on your own domain, behind Cloudflare Access. Uncomment and edit,
+  // then attach an Access application to the same hostname (see README).
+  // "routes": [{ "pattern": "vocab.example.com", "custom_domain": true }],
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "english-vocab",
+      // Replace with the id printed by: npx wrangler d1 create english-vocab
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+
+  "vars": {
+    // Models are tried in order; the free tier often returns 503/429 for one model.
+    "GEMINI_MODELS": "gemini-3.6-flash,gemini-3.5-flash,gemini-3.7-flash",
+
+    // Cloudflare Access (Zero Trust). Fill in after creating the Access application:
+    //   ACCESS_TEAM_DOMAIN = "<your-team>.cloudflareaccess.com"
+    //   ACCESS_AUD         = the application's "Audience (AUD) tag"
+    // While these are empty every /api request is refused (fail closed).
+    "ACCESS_TEAM_DOMAIN": "",
+    "ACCESS_AUD": ""
+  }
+
+  // Secrets (never put these in this file):
+  //   npx wrangler secret put GEMINI_API_KEY
+  // For local dev, put GEMINI_API_KEY and DEV_AUTH_BYPASS=1 in .dev.vars (gitignored).
+}

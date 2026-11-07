@@ -7,3 +7,4 @@ dist/
 
 # Personal test photos (handwriting, exam papers)
 tests/fixtures/
+*.tsbuildinfo
